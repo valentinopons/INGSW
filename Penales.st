@@ -705,34 +705,139 @@ test34ArqueroQueEsperaPorTiroYSeAdelantaVsPlayeraAMatarSiempreAtaja
 
 !classDefinition: #Arquero category: #Penales!
 Object subclass: #Arquero
-	instanceVariableNames: ''
+	instanceVariableNames: 'estilo fuerza'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Penales'!
+
+!Arquero methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:51:55'!
+fuerza
+	^fuerza! !
+
+!Arquero methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 20:59:16'!
+inicializarConEstilo: aRenameMe1 ConFuerza: fuerzaBase 
+	estilo := aRenameMe1 .
+	fuerza := fuerzaBase! !
+
+!Arquero methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:53:08'!
+tipo
+	^estilo ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Arquero class' category: #Penales!
+Arquero class
+	instanceVariableNames: ''!
+
+!Arquero class methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 20:58:27'!
+esperaPorTiroYSeAdelantaSuFuerzaBaseEs: fuerzaBase 
+	^self new inicializarConEstilo: #EsperaYSeAdelata ConFuerza: fuerzaBase ! !
 
 
 !classDefinition: #Delantero category: #Penales!
 Object subclass: #Delantero
-	instanceVariableNames: ''
+	instanceVariableNames: 'estilo fuerza'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Penales'!
+
+!Delantero methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:52:08'!
+fuerza
+	^fuerza ! !
+
+!Delantero methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 20:54:57'!
+inicializarConTipo: estiloDeTiro conFuerzaBase: fuerzaBase
+	estilo:= estiloDeTiro. 
+	fuerza:= fuerzaBase! !
+
+!Delantero methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:52:56'!
+tipo
+	^estilo ! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Delantero class' category: #Penales!
+Delantero class
+	instanceVariableNames: ''!
+
+!Delantero class methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 20:54:01'!
+decideTirarAColocarSuFuerzaBaseEs: fuerzaBase 
+	^self new inicializarConTipo: #AColocar conFuerzaBase: fuerzaBase ! !
 
 
 !classDefinition: #Pelota category: #Penales!
 Object subclass: #Pelota
-	instanceVariableNames: ''
+	instanceVariableNames: 'tipo'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Penales'!
 
+!Pelota methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 20:56:30'!
+inicializarConTipo: tipoDePelota 
+	tipo := tipoDePelota ! !
+
+!Pelota methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:52:40'!
+tipo
+	^tipo! !
+
+"-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
+
+!classDefinition: 'Pelota class' category: #Penales!
+Pelota class
+	instanceVariableNames: ''!
+
+!Pelota class methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 20:56:01'!
+jabulaniSudafricanaRapida
+	^self new inicializarConTipo: #Jabulani! !
+
 
 !classDefinition: #Penales category: #Penales!
 Object subclass: #Penales
-	instanceVariableNames: ''
+	instanceVariableNames: 'delantero arquero puntajeDelantero puntajeArquero remateResultante'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Penales'!
+
+!Penales methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 22:17:07'!
+arbitroPitaConPelota: pelota delanteroRemataAlArcoConDireccion: unaDireccionDeTiro arqueroSeLanzaEnDirección: unaDireccionDeAtajada
+	|fuerzaDelanteroResultante fuerzaArqueroResultante direccionTiroFinal direccionAtajadaFinal |
+	direccionTiroFinal := unaDireccionDeTiro.
+	direccionAtajadaFinal := unaDireccionDeAtajada.
+	
+	unaDireccionDeTiro        enRango ifFalse: [^Error new signal: self class direccionTiroFueraDeRango ].
+	unaDireccionDeAtajada  enRango ifFalse: [^Error new signal: self class direccionArqueroFueraDeRango ].
+	
+	pelota tipo = #Jabulani ifTrue: [ 
+			delantero tipo = #AColocar ifTrue: [
+				arquero tipo = #EsperaYSeAdelata ifTrue: [
+						fuerzaDelanteroResultante := (delantero fuerza) / 2 .
+						fuerzaArqueroResultante    := (arquero  fuerza) + ((arquero fuerza) / 2). ]]].
+	
+	(direccionTiroFinal  = direccionAtajadaFinal  and: fuerzaDelanteroResultante > fuerzaArqueroResultante) ifTrue: [puntajeDelantero := 1].
+	direccionTiroFinal  ~= direccionAtajadaFinal  ifTrue: [puntajeDelantero := 1].
+	(direccionTiroFinal  = direccionAtajadaFinal and: fuerzaArqueroResultante >= fuerzaDelanteroResultante ) ifTrue:  [puntajeArquero := 1].	
+	! !
+
+!Penales methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:03:57'!
+inicializarConDelantero: unDelantero yArquero: unArquero 
+	
+	delantero := unDelantero .
+	arquero := unArquero .
+	puntajeDelantero:= 0.
+	puntajeArquero := 0.
+	! !
+
+!Penales methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:15:42'!
+puntajeDeArquero
+	^puntajeArquero ! !
+
+!Penales methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 21:15:25'!
+puntajeDeDelantero
+	^puntajeDelantero ! !
+
+!Penales methodsFor: 'as yet unclassified' stamp: 'v 4/25/2025 22:11:37'!
+varDireccionRemateResultante
+	^remateResultante! !
 
 "-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- "!
 
@@ -749,3 +854,8 @@ direccionArqueroFueraDeRango
 direccionTiroFueraDeRango
 	
 	^'La pelota debe dirigirse a coordenadas válidas'! !
+
+
+!Penales class methodsFor: 'instance creation' stamp: 'v 4/25/2025 21:00:57'!
+conDelantero: unDelantero yArquero: unArquero 
+	^self new inicializarConDelantero: unDelantero yArquero: unArquero ! !
