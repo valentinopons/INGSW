@@ -1,3 +1,41 @@
+!classDefinition: #PortfolioTest category: #'Portfolio-Ejercicio'!
+TestCase subclass: #PortfolioTest
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/29/2025 15:49:15'!
+test01AnEmptyPortfolioHasZeroBalance
+	|portfolio|
+	portfolio := Portfolio new.
+	self assert: portfolio balance equals: 0! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/29/2025 15:53:12'!
+test02PortfolioWithOneReceptiveAccountHasTheBlanaceOfThatReceptiveAccount
+	|portfolio account|
+	portfolio := Portfolio new.
+	account := ReceptiveAccount  new.
+	Deposit register: 100 on: account.
+	portfolio add: account.
+		
+	self assert: portfolio balance equals: 100! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/29/2025 15:58:28'!
+test03PortfolioWithTwoReceptiveAccountHasTheBlanaceOfTheSumOfReceptiveAccount
+	|portfolio account account1|
+	portfolio := Portfolio new.
+	account := ReceptiveAccount  new.
+	Deposit register: 100 on: account.
+	portfolio add: account.
+	
+	account1 := ReceptiveAccount  new.
+	Deposit register: 200 on: account1.
+	portfolio add: account1.	
+	
+	self assert: portfolio balance equals: 300! !
+
+
 !classDefinition: #ReceptiveAccountTest category: #'Portfolio-Ejercicio'!
 TestCase subclass: #ReceptiveAccountTest
 	instanceVariableNames: ''
@@ -192,6 +230,29 @@ Withdraw class
 for: aValue
 
 	^ self new initializeFor: aValue ! !
+
+
+!classDefinition: #Portfolio category: #'Portfolio-Ejercicio'!
+Object subclass: #Portfolio
+	instanceVariableNames: 'accounts'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Portfolio-Ejercicio'!
+
+!Portfolio methodsFor: 'accessing' stamp: 'v 5/29/2025 15:59:08'!
+add: anAccount 
+	accounts add: anAccount ! !
+
+!Portfolio methodsFor: 'accessing' stamp: 'v 5/29/2025 16:00:11'!
+balance
+	accounts ifEmpty: [^0].
+	^accounts sum: [:account | account balance].! !
+
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'v 5/29/2025 15:58:50'!
+initialize
+	
+	accounts := OrderedCollection new! !
 
 
 !classDefinition: #ReceptiveAccount category: #'Portfolio-Ejercicio'!
