@@ -5,26 +5,26 @@ TestCase subclass: #PortfolioTest
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/29/2025 15:49:15'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test01AnEmptyPortfolioHasZeroBalance
 	|portfolio|
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	self assert: portfolio balance equals: 0! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 17:48:01'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test02PortfolioWithOneReceptiveAccountHasTheBalanceOfThatReceptiveAccount
 	|portfolio account|
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	Deposit register: 100 on: account.
 	portfolio add: account.
 		
 	self assert: portfolio balance equals: 100! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 17:47:44'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test03PortfolioWithTwoReceptiveAccountHasTheBalanceOfTheSumOfReceptiveAccount
 	|portfolio account account1|
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	Deposit register: 100 on: account.
 	portfolio add: account.
@@ -35,10 +35,10 @@ test03PortfolioWithTwoReceptiveAccountHasTheBalanceOfTheSumOfReceptiveAccount
 	
 	self assert: portfolio balance equals: 300! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 18:21:11'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test04PortfolioHasAnAccountWithATransactionAndAskIfThatTransactionIsRegistered
 	|portfolio account |
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	Deposit register: 100 on: account.
 	
@@ -46,11 +46,11 @@ test04PortfolioHasAnAccountWithATransactionAndAskIfThatTransactionIsRegistered
 	
 	self assert: (portfolio hasRegistered: account transactions first)! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 18:24:28'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test05PortfolioHasAnAccountWithATransactionAndAskIfAnotherTransactionIsRegistered
 	|portfolio account account1 |
 	
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	account1:= ReceptiveAccount  new.
 	
@@ -61,19 +61,19 @@ test05PortfolioHasAnAccountWithATransactionAndAskIfAnotherTransactionIsRegistere
 	
 	self deny: (portfolio hasRegistered: account1 transactions first)! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 18:32:09'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test06PortfolioWithNoAccountsHasNoTransactions
 	|portfolio|
 	
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	
 	self assert: portfolio transactions isEmpty 
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 19:01:21'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test07PortfolioWithOneAccountHasTheTransactionsOfThatAccount
 	|portfolio account |
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	
 	Deposit register: 100 on: account.
@@ -83,10 +83,10 @@ test07PortfolioWithOneAccountHasTheTransactionsOfThatAccount
 	self assert: portfolio transactions equals: account transactions asSet 
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 19:10:31'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test08PortfolioWithTwoAccountsHasTheTransactionsOfBothAccounts
 	|portfolio account account1 transactions |
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	account1 := ReceptiveAccount  new.
 
@@ -100,10 +100,10 @@ test08PortfolioWithTwoAccountsHasTheTransactionsOfBothAccounts
 	self assert: (portfolio transactions) equals: transactions  
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 18:32:43'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test09PortfolioWithOneAccountCantAddThatSameAccount
 	|portfolio account  |
-	portfolio := Portfolio new.
+	portfolio := Porfolio new.
 	account := ReceptiveAccount  new.
 	
 	Deposit register: 100 on: account.
@@ -115,11 +115,11 @@ test09PortfolioWithOneAccountCantAddThatSameAccount
 	
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 20:54:35'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test10PortfolioWithOneAccountCantAddAPortfolioWithThatSameAccount
 	|portfolio account  portfolio1|
-	portfolio := Portfolio new.
-	portfolio1 := Portfolio new.
+	portfolio := Porfolio new.
+	portfolio1 := Porfolio new.
 	account := ReceptiveAccount  new.
 	
 	Deposit register: 100 on: account.
@@ -132,12 +132,12 @@ test10PortfolioWithOneAccountCantAddAPortfolioWithThatSameAccount
 	
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 11:55:40'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test11PortfolioWithOneAccountCantAddAPortfolioWithAPortfolioWithTheSameAccountAsTheFather
 	|portfolio account  portfolio1 portfolio2|
-	portfolio := Portfolio new.
-	portfolio1 := Portfolio new.
-	portfolio2 := Portfolio new.
+	portfolio := Porfolio new.
+	portfolio1 := Porfolio new.
+	portfolio2 := Porfolio new.
 	account := ReceptiveAccount  new.
 	
 	Deposit register: 100 on: account.
@@ -152,11 +152,11 @@ test11PortfolioWithOneAccountCantAddAPortfolioWithAPortfolioWithTheSameAccountAs
 	
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 21:35:52'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test12PortfolioWithOneAccountAndOnePortfolioCantAddThatAccountToThatPortfolio
 	|portfolio account  portfolio1 |
-	portfolio := Portfolio new.
-	portfolio1 := Portfolio new.
+	portfolio := Porfolio new.
+	portfolio1 := Porfolio new.
 
 	account := ReceptiveAccount  new.
 	
@@ -171,12 +171,12 @@ test12PortfolioWithOneAccountAndOnePortfolioCantAddThatAccountToThatPortfolio
 	
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:23:07'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 17:48:17'!
 test13PortfolioWithOneAccountAndAPortfolioThatPorfolioCantAddAPorfolioWithThatSameAccount
 	|portfolio account  portfolio1 portfolio2|
-	portfolio := Portfolio new.
-	portfolio1 := Portfolio new.
-	portfolio2 := Portfolio new.
+	portfolio := Porfolio new.
+	portfolio1 := Porfolio new.
+	portfolio2 := Porfolio new.
 	account := ReceptiveAccount  new.
 	
 	Deposit register: 100 on: account.
@@ -394,6 +394,16 @@ Object subclass: #BankingStructure
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
+!BankingStructure methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:24:51'!
+checkTheAdditionOfPorfolio: aPortfolio withoutChecking: portfoliosVisited
+
+	self subclassResponsibility! !
+
+!BankingStructure methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:30:22'!
+checkTheAdditionOfReceptiveAccount: anAccount withoutChecking: porfoliosVisited
+
+	self subclassResponsibility! !
+
 !BankingStructure methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:06:41'!
 isAddedTo: aPortfolio
 
@@ -404,76 +414,97 @@ isValidToBeAddedTo: aPortfolio
 
 	self subclassResponsibility! !
 
+!BankingStructure methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:10:45'!
+isValidToBeAddedTo: aPortfolio withoutChecking: portfoliosVisited
+
+	self subclassResponsibility! !
+
 
-!classDefinition: #Portfolio category: #'Portfolio-Ejercicio'!
-BankingStructure subclass: #Portfolio
-	instanceVariableNames: 'accounts porfoliosAbove'
+!classDefinition: #Porfolio category: #'Portfolio-Ejercicio'!
+BankingStructure subclass: #Porfolio
+	instanceVariableNames: 'financialAssets porfoliosAbove'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!Portfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 11:33:23'!
-add: aBankingStructure 
-	self isValidToAdd: aBankingStructure.
-	aBankingStructure isAddedTo:self.
-	accounts add: aBankingStructure ! !
+!Porfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 18:36:50'!
+add: fiancialAsset 
+	self isValidToAdd: fiancialAsset.
+	fiancialAsset isAddedTo:self.
+	financialAssets add: fiancialAsset ! !
 
-!Portfolio methodsFor: 'accessing' stamp: 'v 5/30/2025 18:45:51'!
+!Porfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 18:36:24'!
 balance
 
-	^accounts sum: [:account | account balance]  ifEmpty: [^0] .! !
+	^financialAssets sum: [:asset | asset balance]  ifEmpty: [^0] .! !
 
-!Portfolio methodsFor: 'accessing' stamp: 'v 5/30/2025 18:18:56'!
+!Porfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 18:36:14'!
 hasRegistered: transaction
 	
-	^accounts anySatisfy: [:account| (account hasRegistered: transaction)].
+	^financialAssets anySatisfy: [:account| (account hasRegistered: transaction)].
 ! !
 
-!Portfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 11:54:46'!
+!Porfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 11:54:46'!
 portfoliosAboveDoNotContain: anAccount withoutChecking: porfoliosVisited
 	
 	porfoliosAbove do: [:portfolio | anAccount isValidToBeAddedTo: portfolio withoutChecking: porfoliosVisited ].! !
 
-!Portfolio methodsFor: 'accessing' stamp: 'v 5/30/2025 18:59:23'!
+!Porfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 18:36:14'!
 transactions
 	|transactions|
 	transactions := Set new.
-	accounts do:[:account | transactions := transactions union: account transactions].
+	financialAssets do:[:account | transactions := transactions union: account transactions].
 	^transactions ! !
 
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 11:21:41'!
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:26:34'!
+checkTheAdditionOfPorfolio: aPortfolio withoutChecking: portfoliosVisited.
+
+		((portfoliosVisited includes: self)not) ifTrue: [
+			self markMeAsVisitedIn: portfoliosVisited .
+			self isValidToAddPortfolio: aPortfolio withoutChecking: portfoliosVisited ]! !
+
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:38:16'!
+checkTheAdditionOfReceptiveAccount: anAccount withoutChecking: porfoliosVisited
+	
+		 ((porfoliosVisited includes: self)not) ifTrue: [
+			porfoliosVisited add: self. 
+			self isValidToAddReceptiveAccount: anAccount withoutChecking:porfoliosVisited . ].
+					
+	! !
+
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:36:14'!
 initialize
 	
-	accounts := Set new.
+	financialAssets := Set new.
 	porfoliosAbove := OrderedCollection new.
 ! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:08:31'!
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:08:31'!
 isAddedTo: aPortfolio
 
 	porfoliosAbove add: aPortfolio.! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:10:26'!
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:10:26'!
 isValidForPorfoliosAboveToAdd: aPorfolio WithoutChecking: portfoliosVisited
 
 	porfoliosAbove do:[:porfolio | aPorfolio isValidToBeAddedTo: porfolio withoutChecking: portfoliosVisited ].! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:08:22'!
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:08:22'!
 isValidToBeAddedTo: aPortfolio withoutChecking: portfoliosVisited
 	
 	aPortfolio isValidToAddPortfolio: self withoutChecking: portfoliosVisited .
 	
 	aPortfolio isValidForPorfoliosAboveToAdd: self WithoutChecking: portfoliosVisited ! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 15:23:36'!
+!Porfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:39:28'!
 porfoliosAboveDoNoHaveAnyOfMyAccountsWithoutChecking: portfoliosVisited
 
-	^ porfoliosAbove do:[:porfolio | 
-	accounts do: [:bankingStructure | bankingStructure isValidToBeAddedTo: porfolio withoutChecking: portfoliosVisited ]]! !
+	porfoliosAbove do:[:porfolio | 
+		financialAssets do: [:bankingStructure | bankingStructure isValidToBeAddedTo: porfolio withoutChecking: portfoliosVisited ]]! !
 
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 11:39:00'!
+!Porfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 11:39:00'!
 isValidToAdd: bankingStructure 
 	|porfoliosVisited|
 	porfoliosVisited := OrderedCollection new.
@@ -482,26 +513,23 @@ isValidToAdd: bankingStructure
 	
 	! !
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:22:43'!
+!Porfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 18:36:14'!
 isValidToAddPortfolio: aPortfolio withoutChecking: portfoliosVisited.
+	
+	
+	 financialAssets do: [:member | member checkTheAdditionOfPorfolio: aPortfolio withoutChecking: portfoliosVisited.]! !
 
-	 accounts do: [:member | ((member isKindOf: ReceptiveAccount)) ifTrue:[aPortfolio isValidToAddReceptiveAccount: member withoutChecking: portfoliosVisited ].
-							((member isKindOf: Portfolio) and:((portfoliosVisited includes: member)not) ) ifTrue: [member markMeAsVisitedIn: portfoliosVisited .
-								member isValidToAddPortfolio: aPortfolio withoutChecking: portfoliosVisited ]]! !
-
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 11:45:35'!
+!Porfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 18:36:14'!
 isValidToAddReceptiveAccount: anAccount withoutChecking: porfoliosVisited.
 
-	accounts do: [:member | ((member isKindOf: Portfolio) and: ((porfoliosVisited includes: member)not)) ifTrue: [.porfoliosVisited add: member. member isValidToAddReceptiveAccount: anAccount withoutChecking:porfoliosVisited . ].
-								(member isKindOf: ReceptiveAccount ) ifTrue: [
-									(member = anAccount) ifTrue: [Error new signal: 'cant add an account that has been already added']]]! !
+	financialAssets do: [:member | member checkTheAdditionOfReceptiveAccount: anAccount withoutChecking: porfoliosVisited.]! !
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:22:25'!
+!Porfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:22:25'!
 markMeAsVisitedIn: portfoliosVisited
 
 	^ portfoliosVisited add: self! !
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:20:19'!
+!Porfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:20:19'!
 markPorfolioAsVisited: aPorfolio in: portfoliosVisited
 
 	^ portfoliosVisited add: aPorfolio! !
@@ -563,6 +591,19 @@ hasRegistered: aTransaction
 	^ transactions includes: aTransaction 
 ! !
 
+
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:27:09'!
+checkTheAdditionOfPorfolio: aPortfolio withoutChecking: portfoliosVisited.
+	
+	aPortfolio isValidToAddReceptiveAccount: self withoutChecking: portfoliosVisited 
+						
+		! !
+
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 18:35:13'!
+checkTheAdditionOfReceptiveAccount: anAccount withoutChecking: porfoliosVisited
+
+			
+		(self = anAccount) ifTrue: [Error new signal: 'cant add an account that has been already added']! !
 
 !ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:22:31'!
 isAddedTo: aPortfolio
