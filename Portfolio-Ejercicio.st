@@ -132,13 +132,12 @@ test10PortfolioWithOneAccountCantAddAPortfolioWithThatSameAccount
 	
 ! !
 
-!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 21:29:44'!
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 11:55:40'!
 test11PortfolioWithOneAccountCantAddAPortfolioWithAPortfolioWithTheSameAccountAsTheFather
 	|portfolio account  portfolio1 portfolio2|
 	portfolio := Portfolio new.
 	portfolio1 := Portfolio new.
 	portfolio2 := Portfolio new.
-
 	account := ReceptiveAccount  new.
 	
 	Deposit register: 100 on: account.
@@ -168,6 +167,25 @@ test12PortfolioWithOneAccountAndOnePortfolioCantAddThatAccountToThatPortfolio
 	
 	
 	self should: [	portfolio1 add: account] raise: Error 
+			withMessageText: 'cant add an account that has been already added'.
+	
+! !
+
+!PortfolioTest methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:23:07'!
+test13PortfolioWithOneAccountAndAPortfolioThatPorfolioCantAddAPorfolioWithThatSameAccount
+	|portfolio account  portfolio1 portfolio2|
+	portfolio := Portfolio new.
+	portfolio1 := Portfolio new.
+	portfolio2 := Portfolio new.
+	account := ReceptiveAccount  new.
+	
+	Deposit register: 100 on: account.
+	
+	portfolio add: portfolio1.
+	portfolio add: account.
+	portfolio2 add: account.
+	
+	self should: [	portfolio1 add: portfolio2] raise: Error 
 			withMessageText: 'cant add an account that has been already added'.
 	
 ! !
@@ -376,6 +394,11 @@ Object subclass: #BankingStructure
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
+!BankingStructure methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:06:41'!
+isAddedTo: aPortfolio
+
+	self subclassResponsibility! !
+
 !BankingStructure methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 22:01:59'!
 isValidToBeAddedTo: aPortfolio
 
@@ -384,14 +407,15 @@ isValidToBeAddedTo: aPortfolio
 
 !classDefinition: #Portfolio category: #'Portfolio-Ejercicio'!
 BankingStructure subclass: #Portfolio
-	instanceVariableNames: 'accounts'
+	instanceVariableNames: 'accounts porfoliosAbove'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Portfolio-Ejercicio'!
 
-!Portfolio methodsFor: 'accessing' stamp: 'fv 6/2/2025 22:08:49'!
+!Portfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 11:33:23'!
 add: aBankingStructure 
-	self isValidToAdd: aBankingStructure .
+	self isValidToAdd: aBankingStructure.
+	aBankingStructure isAddedTo:self.
 	accounts add: aBankingStructure ! !
 
 !Portfolio methodsFor: 'accessing' stamp: 'v 5/30/2025 18:45:51'!
@@ -405,6 +429,11 @@ hasRegistered: transaction
 	^accounts anySatisfy: [:account| (account hasRegistered: transaction)].
 ! !
 
+!Portfolio methodsFor: 'accessing' stamp: 'fv 6/3/2025 11:54:46'!
+portfoliosAboveDoNotContain: anAccount withoutChecking: porfoliosVisited
+	
+	porfoliosAbove do: [:portfolio | anAccount isValidToBeAddedTo: portfolio withoutChecking: porfoliosVisited ].! !
+
 !Portfolio methodsFor: 'accessing' stamp: 'v 5/30/2025 18:59:23'!
 transactions
 	|transactions|
@@ -413,37 +442,69 @@ transactions
 	^transactions ! !
 
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'v 5/30/2025 18:53:48'!
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 11:21:41'!
 initialize
 	
-	accounts := Set new! !
+	accounts := Set new.
+	porfoliosAbove := OrderedCollection new.
+! !
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 22:04:25'!
-isValidToBeAddedTo: aPortfolio
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:08:31'!
+isAddedTo: aPortfolio
+
+	porfoliosAbove add: aPortfolio.! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:10:26'!
+isValidForPorfoliosAboveToAdd: aPorfolio WithoutChecking: portfoliosVisited
+
+	porfoliosAbove do:[:porfolio | aPorfolio isValidToBeAddedTo: porfolio withoutChecking: portfoliosVisited ].! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 16:08:22'!
+isValidToBeAddedTo: aPortfolio withoutChecking: portfoliosVisited
 	
-	aPortfolio isValidToAddPortfolio: self.
-	! !
+	aPortfolio isValidToAddPortfolio: self withoutChecking: portfoliosVisited .
+	
+	aPortfolio isValidForPorfoliosAboveToAdd: self WithoutChecking: portfoliosVisited ! !
+
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 15:23:36'!
+porfoliosAboveDoNoHaveAnyOfMyAccountsWithoutChecking: portfoliosVisited
+
+	^ porfoliosAbove do:[:porfolio | 
+	accounts do: [:bankingStructure | bankingStructure isValidToBeAddedTo: porfolio withoutChecking: portfoliosVisited ]]! !
 
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/2/2025 21:58:09'!
+!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 11:39:00'!
 isValidToAdd: bankingStructure 
-
-	bankingStructure isValidToBeAddedTo: self.
+	|porfoliosVisited|
+	porfoliosVisited := OrderedCollection new.
+	bankingStructure isValidToBeAddedTo: self withoutChecking: porfoliosVisited .
+	
 	
 	! !
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/2/2025 21:52:38'!
-isValidToAddPortfolio: bankingStructure
+!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:22:43'!
+isValidToAddPortfolio: aPortfolio withoutChecking: portfoliosVisited.
 
-	^ accounts do: [:member | (member isKindOf: ReceptiveAccount) ifTrue:[bankingStructure isValidToAdd: member ].
-												(member isKindOf: Portfolio ) ifTrue: [member isValidToAdd: bankingStructure ]]! !
+	 accounts do: [:member | ((member isKindOf: ReceptiveAccount)) ifTrue:[aPortfolio isValidToAddReceptiveAccount: member withoutChecking: portfoliosVisited ].
+							((member isKindOf: Portfolio) and:((portfoliosVisited includes: member)not) ) ifTrue: [member markMeAsVisitedIn: portfoliosVisited .
+								member isValidToAddPortfolio: aPortfolio withoutChecking: portfoliosVisited ]]! !
 
-!Portfolio methodsFor: 'error handling' stamp: 'fv 6/2/2025 21:51:18'!
-isValidToAddReceptiveAccount: anAccount
+!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 11:45:35'!
+isValidToAddReceptiveAccount: anAccount withoutChecking: porfoliosVisited.
 
-	^ accounts do: [:member | (member isKindOf: Portfolio) ifTrue: [member isValidToAdd: anAccount ].
+	accounts do: [:member | ((member isKindOf: Portfolio) and: ((porfoliosVisited includes: member)not)) ifTrue: [.porfoliosVisited add: member. member isValidToAddReceptiveAccount: anAccount withoutChecking:porfoliosVisited . ].
 								(member isKindOf: ReceptiveAccount ) ifTrue: [
 									(member = anAccount) ifTrue: [Error new signal: 'cant add an account that has been already added']]]! !
+
+!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:22:25'!
+markMeAsVisitedIn: portfoliosVisited
+
+	^ portfoliosVisited add: self! !
+
+!Portfolio methodsFor: 'error handling' stamp: 'fv 6/3/2025 16:20:19'!
+markPorfolioAsVisited: aPorfolio in: portfoliosVisited
+
+	^ portfoliosVisited add: aPorfolio! !
 
 
 !classDefinition: #ReceptiveAccount category: #'Portfolio-Ejercicio'!
@@ -503,7 +564,13 @@ hasRegistered: aTransaction
 ! !
 
 
-!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'fv 6/2/2025 22:05:14'!
-isValidToBeAddedTo: aPortfolio
-	
-	aPortfolio isValidToAddReceptiveAccount: self.! !
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 10:22:31'!
+isAddedTo: aPortfolio
+
+! !
+
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'fv 6/3/2025 11:56:48'!
+isValidToBeAddedTo: aPortfolio withoutChecking: porfoliosVisited 
+
+	aPortfolio isValidToAddReceptiveAccount: self withoutChecking: porfoliosVisited.
+	aPortfolio portfoliosAboveDoNotContain: self withoutChecking: porfoliosVisited. ! !
