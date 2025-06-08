@@ -689,10 +689,11 @@ getTextReport
 	^text
 	! !
 
-!Portfolio methodsFor: 'accounts management' stamp: 'v 6/7/2025 23:51:23'!
+!Portfolio methodsFor: 'accounts management' stamp: 'v 6/8/2025 01:13:11'!
 initialize
-	
-	name := 'Unamed Portfolio'. ! !
+	name := 'unamed portfolio'.
+	accounts := OrderedCollection new.
+	parents := OrderedCollection new.! !
 
 !Portfolio methodsFor: 'accounts management' stamp: 'HAW 5/25/2019 12:17:31'!
 rootParents
@@ -717,9 +718,9 @@ addTransactionsTo: aCollectionOfTransactions
 
 	accounts do: [ :anAccount | anAccount addTransactionsTo: aCollectionOfTransactions ]! !
 
-!Portfolio methodsFor: 'transactions' stamp: 'v 6/7/2025 22:44:42'!
+!Portfolio methodsFor: 'transactions' stamp: 'v 6/8/2025 01:16:20'!
 getTotalValueFromTransfer
-	
+	accounts ifEmpty: [^0].
 	^accounts sum: [:account | account getTotalValueFromTransfer]! !
 
 !Portfolio methodsFor: 'transactions' stamp: 'HAW 5/25/2019 11:38:32'!
@@ -774,9 +775,9 @@ signalCanNotAddAccount
 	self error: self class canNotAddAccountErrorMessage! !
 
 
-!Portfolio methodsFor: 'as yet unclassified' stamp: 'v 6/8/2025 00:58:00'!
+!Portfolio methodsFor: 'as yet unclassified' stamp: 'v 6/8/2025 01:20:40'!
 getChildName
-	
+	accounts ifEmpty: [^''].
 	^accounts first name! !
 
 !Portfolio methodsFor: 'as yet unclassified' stamp: 'v 6/8/2025 00:55:09'!
@@ -920,6 +921,11 @@ isValidToBeAddedTo: aPortfolio withoutChecking: porfoliosVisited
 
 	aPortfolio isValidToAddReceptiveAccount: self withoutChecking: porfoliosVisited.
 	aPortfolio portfoliosAboveDoNotContain: self withoutChecking: porfoliosVisited. ! !
+
+!ReceptiveAccount methodsFor: 'as yet unclassified' stamp: 'v 6/8/2025 01:19:52'!
+name 
+	
+	^name! !
 
 
 !ReceptiveAccount methodsFor: 'composition' stamp: 'HAW 5/25/2019 12:03:32'!
